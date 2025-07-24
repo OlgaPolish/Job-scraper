@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сбор вакансий с LinkedIn</title>
+</head>
+<body>
+    <h1>Сбор вакансий с LinkedIn</h1>
+    <form action="/scrape" method="post">
+        <label for="keywords">Ключевые слова:</label><br>
+        <input type="text" id="keywords" name="keywords" required><br><br>
+        
+        <label for="locations">Локации:</label><br>
+        <input type="text" id="locations" name="locations" required><br><br>
+        
+        <label for="user_prompt">Описание желаемой вакансии:</label><br>
+        <textarea id="user_prompt" name="user_prompt" rows="4" cols="50"></textarea><br><br>
+        
+        <label for="priority_keywords">Приоритетные критерии (через запятую):</label><br>
+        <input type="text" id="priority_keywords" name="priority_keywords"><br><br>
+        
+        <label for="stop_words">Стоп-слова (через запятую):</label><br>
+        <input type="text" id="stop_words" name="stop_words"><br><br>
+        
+        <label for="max_pages">Количество страниц для поиска:</label><br>
+        <input type="number" id="max_pages" name="max_pages" value="3" min="1"><br><br>
+        
+        <input type="submit" value="Собрать вакансии">
+    </form>
+</body>
+</html>

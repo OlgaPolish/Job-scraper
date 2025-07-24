@@ -55,7 +55,7 @@ class LinkedInJobScraper:
         title = job_data.get('Title', '').lower()
         description = job_data.get('Description', '').lower()
         return any(stop_word in title or stop_word in description for stop_word in stop_words)
-        
+
     def scrape_jobs(self, requirements):
 
         """Скрапинг вакансий с LinkedIn с фильтрацией по уникальной ссылке"""
@@ -347,7 +347,6 @@ def scrape():
     max_pages = int(request.form.get('max_pages', 3))  # Значение по умолчанию 3
     
     requirements = scraper.get_user_requirements(keywords, locations, request.form.get('stop_words', ''))
-    # requirements = scraper.get_user_requirements(keywords, locations)
     requirements['max_pages'] = max_pages  # Устанавливаем количество страниц
 
     jobs = scraper.scrape_jobs(requirements)
@@ -372,6 +371,7 @@ def scrape():
 if __name__ == "__main__":
     app.run(debug=True)
 
+# In[ ]:
 
 
 
