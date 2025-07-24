@@ -41,14 +41,21 @@ class LinkedInJobScraper:
         }
         self.jobs_list = []
 
-    def get_user_requirements(self, keywords, locations):
+    def get_user_requirements(self, keywords, locations, stop_words):
         """Получение требований пользователя"""
         return {
             'keywords': [kw.strip() for kw in keywords.split(',') if kw.strip()],
             'locations': [loc.strip() for loc in locations.split(',') if loc.strip()],
+                        'stop_words': [sw.strip().lower() for sw in stop_words.split(',') if sw.strip()],
             'max_pages': 3  # Значение по умолчанию
         }
 
+    def contains_stop_words(self, job_data, stop_words):
+        """Проверка наличия стоп-слов в данных вакансии"""
+        title = job_data.get('Title', '').lower()
+        description = job_data.get('Description', '').lower()
+        return any(stop_word in title or stop_word in description for stop_word in stop_words)
+        
     def scrape_jobs(self, requirements):
 
         """Скрапинг вакансий с LinkedIn с фильтрацией по уникальной ссылке"""
@@ -75,7 +82,7 @@ class LinkedInJobScraper:
     
                         for job in job_cards:
                             job_data = self.extract_job_data(job, kw, city)
-                            if job_data:
+                            if job_data and not self.contains_stop_words(job_data, requirements['stop_words']):
                                 self.jobs_list.append(job_data)
     
                         time.sleep(random.uniform(2, 5))
@@ -339,7 +346,8 @@ def scrape():
     locations = request.form['locations']
     max_pages = int(request.form.get('max_pages', 3))  # Значение по умолчанию 3
     
-    requirements = scraper.get_user_requirements(keywords, locations)
+    requirements = scraper.get_user_requirements(keywords, locations, request.form.get('stop_words', ''))
+    # requirements = scraper.get_user_requirements(keywords, locations)
     requirements['max_pages'] = max_pages  # Устанавливаем количество страниц
 
     jobs = scraper.scrape_jobs(requirements)
@@ -364,9 +372,6 @@ def scrape():
 if __name__ == "__main__":
     app.run(debug=True)
 
-
-
-# In[ ]:
 
 
 
